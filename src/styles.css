@@ -1,4 +1,68 @@
 .App {
-  font-family: sans-serif;
-  text-align: center;
+	font-family: sans-serif;
+	text-align: center;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+}
+
+.col {
+	display: flex;
+	flex-direction: column;
+}
+
+.spacer {
+	width: 50vw;
+	height: 100vh;
+	background: white;
+}
+
+.fields {
+	top: 0;
+	left: 0;
+	width: fit-content;
+	height: 100vh;
+	overflow: scroll;
+	position: fixed;
+	max-width: 50vw;
+}
+
+.preview-container {
+	width: 50vw;
+	overflow: scroll;
+	min-height: 100vw;
+}
+
+.button {
+}
+
+.fixed-bottom-right {
+	right: 24px;
+	bottom: 24px;
+	position: fixed;
+}
+
+.input-container {
+	width: 800px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.counter {
+}
+
+.slider {
+}
+
+.control-card {
+}
+
+.toggles-container {
+}
+
+.controls-container {
 }

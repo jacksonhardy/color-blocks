@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
+import Dummy from './Dummy';
+import Counter from './Counter';
+import Slider from './Slider';
+import ColorPicker from './ColorPicker';
 import './styles.css';
+import ControlCard from './ControlCard';
+import Button from './Button';
 
 export default function App() {
-	const [dimensions, setDimensions] = useState({
-		width: 240,
-		height: 240,
+	const [border, setBorder] = useState({
 		borderTopLeftRadius: 0,
 		borderTopRightRadius: 0,
 		borderBottomRightRadius: 0,
 		borderBottomLeftRadius: 0,
-	});
-
-	const [border, setBorder] = useState({
 		borderWidth: 0,
 		borderColor: '#F0CEF2',
 	});
+	const [allCornerChange, setAllCornerChange] = useState(false);
 
-	const [allCorners, setAllCorners] = useState(0);
+	const [showClipboardDummyInput, setShowClipboardDummyInput] = useState(
+		false
+	);
 
 	const [elementCount, setElementCount] = useState(1);
 	const [layout, setLayout] = useState('flex');
 	const [direction, setDirection] = useState('column');
 	const [columns, setColumns] = useState(1);
-	const [allCornerChange, setAllCornerChange] = useState(false);
 
 	const [colors, setColors] = useState({
 		color: '#ffffff',
@@ -30,18 +33,18 @@ export default function App() {
 		background2: '#8860f4',
 	});
 
-	const handleSliderChange = (e) => {
+	const handleSetBorderRadius = (e) => {
 		if (allCornerChange) {
-			setDimensions({
-				...dimensions,
+			setBorder({
+				...border,
 				borderTopLeftRadius: e.target.value,
 				borderTopRightRadius: e.target.value,
 				borderBottomRightRadius: e.target.value,
 				borderBottomLeftRadius: e.target.value,
 			});
 		} else {
-			setDimensions({
-				...dimensions,
+			setBorder({
+				...border,
 				[e.target.name]: e.target.value,
 			});
 		}
@@ -123,10 +126,10 @@ export default function App() {
 							: `linear-gradient(${gradientAngle}deg, ${colors.background1} 0%, ${colors.background2} ${effectiveMidpoint}%)`,
 					width: `${size.width}px`,
 					height: `${size.height}px`,
-					borderTopLeftRadius: `${dimensions.borderTopLeftRadius}${units}`,
-					borderTopRightRadius: `${dimensions.borderTopRightRadius}${units}`,
-					borderBottomRightRadius: `${dimensions.borderBottomRightRadius}${units}`,
-					borderBottomLeftRadius: `${dimensions.borderBottomLeftRadius}${units}`,
+					borderTopLeftRadius: `${border.borderTopLeftRadius}${units}`,
+					borderTopRightRadius: `${border.borderTopRightRadius}${units}`,
+					borderBottomRightRadius: `${border.borderBottomRightRadius}${units}`,
+					borderBottomLeftRadius: `${border.borderBottomLeftRadius}${units}`,
 					border: `${border.borderWidth}px solid ${border.borderColor}`,
 				}}
 			/>
@@ -138,6 +141,112 @@ export default function App() {
 		return elArray.map((ele) => el);
 	};
 
+	const handleCopyCss = () => {
+		let cssText = `
+		.container {
+			display: ${layout};
+			flex-direction: ${direction};
+			grid-template-columns: repeat(${columns}, 1fr);
+			gap: ${gridGap.rowGap}px ${gridGap.columnGap}px;
+			justify-content: center;
+			align-items: center;
+			height: auto;
+			width: 100%;
+			padding: 80px;
+			box-sizing: border-box;
+		}
+
+		.block {
+			background:
+				${
+					backgroundType === 'solid'
+						? colors.background1
+						: `linear-gradient(${gradientAngle}deg, ${colors.background1} 0 %, ${colors.background2} ${effectiveMidpoint}%)`
+				};
+			width: ${size.width}px;
+			height: ${size.height}px;
+			border-top-left-radius: ${border.borderTopLeftRadius}${units};
+			border-top-right-radius: ${border.borderTopRightRadius}${units};
+			border-bottom-right-radius: ${border.borderBottomRightRadius}${units};
+			border-bottom-left-radius: ${border.borderBottomLeftRadius}${units};
+			border: ${border.borderWidth}px solid ${border.borderColor};
+		}
+		`;
+		setShowClipboardDummyInput(true);
+		setTimeout(() => {
+			let dummy = document.getElementById('dummy-input');
+			dummy.value = cssText;
+			dummy.select();
+			document.execCommand('copy', true);
+			setShowClipboardDummyInput(false);
+		}, 100);
+	};
+
+	const fields = {
+		width: {
+			label: 'Width',
+			name: 'width',
+			type: 'combo',
+			value: size.width,
+			onChange: (e) => setSize({ ...size, width: e.target.value }),
+			max: 1000,
+		},
+		height: {
+			label: 'Height',
+			name: 'height',
+			type: 'combo',
+			value: size.height,
+			onChange: (e) => setSize({ ...size, height: e.target.value }),
+			max: 1000,
+		},
+		widthHeightLock: {
+			label: ['Lock', 'Unlock'],
+			name: 'widthHeightLock',
+			type: 'toggle',
+			value: checkboxChecked,
+			onChange: () => setCheckboxChecked((c) => !c),
+		},
+		borderTopLeftRadius: {
+			onChange: (e) => handleSetBorderRadius(e),
+			name: 'borderTopLeftRadius',
+			value: border.borderTopLeftRadius,
+			max: 200,
+			label: 'Border Top Left Radius',
+			type: 'slider',
+		},
+		borderTopRightRadius: {
+			onChange: (e) => handleSetBorderRadius(e),
+			name: 'borderTopRightRadius',
+			value: border.borderTopRightRadius,
+			max: 200,
+			label: 'Border Top Right Radius',
+			type: 'slider',
+		},
+		borderBottomRightRadius: {
+			onChange: (e) => handleSetBorderRadius(e),
+			name: 'borderBottomRightRadius',
+			value: border.borderBottomRightRadius,
+			max: 200,
+			label: 'Border Bottom Right Radius',
+			type: 'slider',
+		},
+		borderBottomLeftRadius: {
+			onChange: (e) => handleSetBorderRadius(e),
+			name: 'borderBottomLeftRadius',
+			value: border.borderBottomLeftRadius,
+			max: 200,
+			label: 'Border Bottom Left Radius',
+			type: 'slider',
+		},
+		borderRadiusLock: {
+			label: ['Lock', 'Unlock'],
+			name: 'widthHeightLock',
+			type: 'toggle',
+			value: allCornerChange,
+			onChange: () => setAllCornerChange((c) => !c),
+		},
+	};
+
 	return (
 		<div
 			className="App"
@@ -146,73 +255,24 @@ export default function App() {
 				flexDirection: 'row',
 			}}
 		>
-			<div
-				className="spacer"
-				style={{
-					width: '50vw',
-					height: '100vh',
-					background: 'white',
-				}}
-			/>
-			<div
-				style={{
-					width: 'fit-content',
-					position: 'fixed',
-					height: '100vh',
-					maxWidth: '50vw',
-					top: 0,
-					left: 0,
-					overflow: 'scroll',
-				}}
-			>
-				<Slider
-					onChange={handleSizeChange}
-					name={'width'}
-					value={size.width}
-					max={1000}
+			<div className="spacer" />
+			<div className="fields">
+				<ControlCard
+					fields={[
+						fields.width,
+						fields.widthHeightLock,
+						fields.height,
+					]}
 				/>
-				<label>Lock</label>
-				<input
-					type="checkbox"
-					checked={checkboxChecked}
-					onChange={() => setCheckboxChecked((c) => !c)}
+				<ControlCard
+					fields={[
+						fields.borderTopLeftRadius,
+						fields.borderTopRightRadius,
+						fields.borderBottomRightRadius,
+						fields.borderBottomLeftRadius,
+					]}
 				/>
-				<Slider
-					onChange={handleSizeChange}
-					name={'height'}
-					value={size.height}
-					max={1000}
-				/>
-				<Slider
-					onChange={handleSliderChange}
-					name={'borderTopLeftRadius'}
-					value={dimensions.borderTopLeftRadius}
-					max={200}
-				/>
-				<Slider
-					onChange={handleSliderChange}
-					name={'borderTopRightRadius'}
-					value={dimensions.borderTopRightRadius}
-					max={200}
-				/>
-				<Slider
-					onChange={handleSliderChange}
-					name={'borderBottomRightRadius'}
-					value={dimensions.borderBottomRightRadius}
-					max={200}
-				/>
-				<Slider
-					onChange={handleSliderChange}
-					name={'borderBottomLeftRadius'}
-					value={dimensions.borderBottomLeftRadius}
-					max={200}
-				/>
-				<label>Lock</label>
-				<input
-					type="checkbox"
-					checked={allCornerChange}
-					onChange={() => setAllCornerChange((ac) => !ac)}
-				/>
+
 				<fieldset>
 					<legend>Border Radius Units</legend>
 					<label>px</label>
@@ -361,6 +421,7 @@ export default function App() {
 				)}
 			</div>
 			<div
+				className="preview-container"
 				style={{
 					width: '50vw',
 					minHeight: '100vw',
@@ -371,11 +432,12 @@ export default function App() {
 					style={{
 						display: `${layout}`,
 						flexDirection: direction,
+						flexWrap: 'wrap',
 						gridTemplateColumns: `repeat(${columns}, 1fr)`,
 						gap: `${gridGap.rowGap}px ${gridGap.columnGap}px`,
 						justifyContent: 'center',
 						alignItems: 'center',
-						height: 'auto',
+						height: layout === 'flex' ? '100vh' : 'auto',
 						width: '100%',
 						padding: 80,
 						boxSizing: 'border-box',
@@ -384,77 +446,15 @@ export default function App() {
 					{mapElements()}
 				</div>
 			</div>
+			<Button
+				onClick={handleCopyCss}
+				label="Copy CSS"
+				className="fixed-bottom-right"
+			/>
+			{showClipboardDummyInput && <Dummy />}
 		</div>
 	);
 }
 
-const Slider = (props) => {
-	return (
-		<div
-			style={{
-				display: 'flex',
-				flexDirection: 'row',
-				justifyContent: 'flex-start',
-				alignItems: 'center',
-				width: '800px',
-			}}
-		>
-			<p style={{ textAlign: 'right', width: 200 }}> {props.name}</p>
-			<input
-				type="range"
-				name={props.name}
-				value={props.value}
-				min={0}
-				max={props.max}
-				onChange={props.onChange}
-			/>
-			<p style={{ textAlign: 'left', width: 80 }}> {props.value}</p>
-		</div>
-	);
-};
-
-const ColorPicker = (props) => {
-	return (
-		<div
-			style={{
-				display: 'flex',
-				flexDirection: 'row',
-				justifyContent: 'flex-start',
-				alignItems: 'center',
-				width: '800px',
-			}}
-		>
-			<p style={{ textAlign: 'right', width: 200 }}> {props.name}</p>
-			<input
-				type="color"
-				name={props.name}
-				value={props.value}
-				onChange={props.onChange}
-			/>
-			<p style={{ textAlign: 'left', width: 80 }}> {props.value}</p>
-		</div>
-	);
-};
-
-const Counter = (props) => {
-	return (
-		<div
-			style={{
-				display: 'flex',
-				flexDirection: 'row',
-				justifyContent: 'flex-start',
-				alignItems: 'center',
-				width: '800px',
-			}}
-		>
-			<p style={{ textAlign: 'right', width: 200 }}> {props.name}</p>
-			<input
-				type="number"
-				name={props.name}
-				value={props.value}
-				onChange={props.onChange}
-			/>
-			<p style={{ textAlign: 'left', width: 80 }}> {props.value}</p>
-		</div>
-	);
-};
+// todo
+// random button
