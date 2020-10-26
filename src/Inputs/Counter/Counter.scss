@@ -1,0 +1,104 @@
+@import "./../../Styles/variables";
+@import "./../../Styles/colors";
+
+input[type="number"]::-webkit-inner-spin-button {
+    opacity: 0;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.counter-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: u(2) 0 u(2) u(2);
+    border: 1px solid $grayMid;
+    border-radius: 8px;
+    box-sizing: border-box;
+	width: 100%;
+	overflow: hidden;
+    input,
+    input.regular-input {
+        border: none;
+        height: auto;
+		padding: 0;
+		width: auto;
+		max-width: 100%;
+        &:focus {
+            outline: none;
+            border: none;
+            box-shadow: none;
+        }
+    }
+    &.error {
+        color: $orange;
+        border-color: $orange;
+        outline: none;
+        box-shadow: none;
+    }
+    &:focus-within {
+        border-color: $purple;
+    }
+    &.fixed-width {
+        &.small {
+            width: u(75);
+        }
+        &.large {
+            width: u(150);
+        }
+    }
+    height: u(9);
+    margin: u(1) 0;
+}
+
+.counter-buttons {
+    @include flex(column, flex-start, flex-end);
+    height: (u(9) - 2);
+    width: u(9);
+    margin: 0;
+    padding: 0;
+	user-select: none;
+	position: relative;
+}
+
+.counter-button {
+    @include flex(column, center, center);
+    box-sizing: border-box;
+    height: (u(9) / 2) - 1;
+    width: u(6);
+    font-size: 14px;
+    text-align: center;
+    background: $white;
+    color: $grayMid;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+    border {
+        left: 1px solid $grayWhite;
+        right: 1px solid transparent;
+        top: 1px solid transparent;
+        bottom: 1px solid transparent;
+    }
+    &.plus {
+        top: 0;
+        border-bottom: 0 solid transparent;
+        border-left: 1px solid $grayWhite;
+        border-radius: 0 8px 0 0;
+        padding-bottom: 2px;
+    }
+    &.minus {
+        bottom: 0;
+        border-top: 1px solid $grayWhite;
+        border-left: 1px solid $grayWhite;
+        border-radius: 0 0 8px 0;
+        // align-self: baseline;
+        padding-bottom: 2px;
+    }
+}

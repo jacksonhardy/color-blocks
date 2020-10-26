@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import Dummy from './Dummy';
-import Counter from './Counter';
-import Slider from './Slider';
-import ColorPicker from './ColorPicker';
-import './styles.css';
-import ControlCard from './ControlCard';
-import Button from './Button';
+import React, { useEffect, useState } from "react";
+import Dummy from "./Dummy";
+import Counter from "./Inputs/Counter/Counter";
+import Slider from "./Inputs/Slider/Slider";
+import ColorPicker from "./Inputs/ColorPicker/ColorPicker";
+import "./main.scss";
+import ControlCard from "./Cards/ControlCard/ControlCard";
+import Button from "./Common/Buttons/Button/Button";
+import Header from "./Header";
+import Snackbar from "./Common/Snackbar/Snackbar";
 
 export default function App() {
 	const [border, setBorder] = useState({
@@ -13,25 +15,21 @@ export default function App() {
 		borderTopRightRadius: 0,
 		borderBottomRightRadius: 0,
 		borderBottomLeftRadius: 0,
-		borderWidth: 0,
-		borderColor: '#F0CEF2',
 	});
 	const [allCornerChange, setAllCornerChange] = useState(false);
+	const [showSnackbar, setShowSnackbar] = useState(false)
 
 	const [showClipboardDummyInput, setShowClipboardDummyInput] = useState(
 		false
 	);
 
 	const [elementCount, setElementCount] = useState(1);
-	const [layout, setLayout] = useState('flex');
-	const [direction, setDirection] = useState('column');
+	const [layout, setLayout] = useState("grid");
+	const [direction, setDirection] = useState("column");
 	const [columns, setColumns] = useState(1);
 
-	const [colors, setColors] = useState({
-		color: '#ffffff',
-		background1: '#486ec4',
-		background2: '#8860f4',
-	});
+	const [color1, setColor1] = useState("#8976FF");
+	const [color2, setColor2] = useState("#F476FF");
 
 	const handleSetBorderRadius = (e) => {
 		if (allCornerChange) {
@@ -57,18 +55,11 @@ export default function App() {
 		});
 	};
 
-	const handleColorChange = (e) => {
-		setColors({
-			...colors,
-			[e.target.name]: e.target.value,
-		});
-	};
-
 	const [size, setSize] = useState({
 		width: 120,
 		height: 120,
 	});
-	const [checkboxChecked, setCheckboxChecked] = useState(false);
+	const [widthHeightLock, setWidthHeightLock] = useState(true);
 	const [gridGap, setGridGap] = useState({
 		rowGap: 8,
 		columnGap: 8,
@@ -90,8 +81,8 @@ export default function App() {
 		}
 	};
 
-	const handleSizeChange = (e) => {
-		if (checkboxChecked) {
+	const handleSetSize = (e) => {
+		if (widthHeightLock) {
 			setSize({
 				width: e.target.value,
 				height: e.target.value,
@@ -104,8 +95,10 @@ export default function App() {
 		}
 	};
 
-	const [units, setUnits] = useState('px');
-	const [backgroundType, setBackgroundType] = useState('solid');
+	const [units, setUnits] = useState("px");
+	const [isPx, setIsPx] = useState(true);
+	const [layoutChecked, setLayoutChecked] = useState(true);
+	const [backgroundType, setBackgroundType] = useState("solid");
 	const [gradientMidpoint, setGradientMidpoint] = useState(50);
 	const [gradientAngle, setGradientAngle] = useState(90);
 	const [effectiveMidpoint, setEffectiveMidpoint] = useState(100);
@@ -116,21 +109,39 @@ export default function App() {
 		setEffectiveMidpoint(val * 2);
 	};
 
+	const handleSetLayout = () => {
+		if (layoutChecked) {
+			setLayout("flex");
+			setLayoutChecked(false);
+		} else {
+			setLayout("grid");
+			setLayoutChecked(true);
+		}
+	};
+
+	useEffect(() => {
+		if (isPx) {
+			setUnits("px");
+		} else {
+			setUnits("%");
+		}
+	}, [isPx]);
+
 	const mapElements = () => {
 		let el = (
 			<div
 				style={{
-					background:
-						backgroundType === 'solid'
-							? `${colors.background1}`
-							: `linear-gradient(${gradientAngle}deg, ${colors.background1} 0%, ${colors.background2} ${effectiveMidpoint}%)`,
+					background: fillIsGradient
+						? `linear-gradient(${gradientAngle}deg, ${color1} 0%, ${color2} ${effectiveMidpoint}%)`
+						: `${color1}`,
 					width: `${size.width}px`,
 					height: `${size.height}px`,
 					borderTopLeftRadius: `${border.borderTopLeftRadius}${units}`,
 					borderTopRightRadius: `${border.borderTopRightRadius}${units}`,
 					borderBottomRightRadius: `${border.borderBottomRightRadius}${units}`,
 					borderBottomLeftRadius: `${border.borderBottomLeftRadius}${units}`,
-					border: `${border.borderWidth}px solid ${border.borderColor}`,
+					border: `${borderWidth}px solid ${borderColor}`,
+					boxSizing: 'border-box'
 				}}
 			/>
 		);
@@ -159,9 +170,9 @@ export default function App() {
 		.block {
 			background:
 				${
-					backgroundType === 'solid'
-						? colors.background1
-						: `linear-gradient(${gradientAngle}deg, ${colors.background1} 0 %, ${colors.background2} ${effectiveMidpoint}%)`
+					fillIsGradient
+						? `linear-gradient(${gradientAngle}deg, ${color1} 0%, ${color2} ${effectiveMidpoint}%)`
+						: color1
 				};
 			width: ${size.width}px;
 			height: ${size.height}px;
@@ -169,292 +180,302 @@ export default function App() {
 			border-top-right-radius: ${border.borderTopRightRadius}${units};
 			border-bottom-right-radius: ${border.borderBottomRightRadius}${units};
 			border-bottom-left-radius: ${border.borderBottomLeftRadius}${units};
-			border: ${border.borderWidth}px solid ${border.borderColor};
+			border: ${borderWidth}px solid ${borderColor};
+			box-sizing: border-box;
 		}
 		`;
 		setShowClipboardDummyInput(true);
+		setShowSnackbar(true)
 		setTimeout(() => {
-			let dummy = document.getElementById('dummy-input');
+			let dummy = document.getElementById("dummy-input");
 			dummy.value = cssText;
 			dummy.select();
-			document.execCommand('copy', true);
+			document.execCommand("copy", true);
 			setShowClipboardDummyInput(false);
 		}, 100);
 	};
 
+	const [fillIsGradient, setFillIsGradient] = useState(true);
+	const [borderWidth, setBorderWidth] = useState(0);
+	const [borderColor, setBorderColor] = useState("#F476FF");
+
 	const fields = {
 		width: {
-			label: 'Width',
-			name: 'width',
-			type: 'combo',
+			label: "width",
+			name: "width",
+			type: "combo",
 			value: size.width,
-			onChange: (e) => setSize({ ...size, width: e.target.value }),
+			onChange: (e) => handleSetSize(e),
 			max: 1000,
 		},
 		height: {
-			label: 'Height',
-			name: 'height',
-			type: 'combo',
+			label: "height",
+			name: "height",
+			type: "combo",
 			value: size.height,
-			onChange: (e) => setSize({ ...size, height: e.target.value }),
+			onChange: (e) => handleSetSize(e),
 			max: 1000,
 		},
 		widthHeightLock: {
-			label: ['Lock', 'Unlock'],
-			name: 'widthHeightLock',
-			type: 'toggle',
-			value: checkboxChecked,
-			onChange: () => setCheckboxChecked((c) => !c),
+			label: ["free", "lock"],
+			name: "widthHeightLock",
+			type: "toggle",
+			value: widthHeightLock,
+			onChange: () => setWidthHeightLock((whl) => !whl),
 		},
 		borderTopLeftRadius: {
 			onChange: (e) => handleSetBorderRadius(e),
-			name: 'borderTopLeftRadius',
+			name: "borderTopLeftRadius",
 			value: border.borderTopLeftRadius,
 			max: 200,
-			label: 'Border Top Left Radius',
-			type: 'slider',
+			label: "Border Top Left Radius",
+			type: "combo",
 		},
 		borderTopRightRadius: {
 			onChange: (e) => handleSetBorderRadius(e),
-			name: 'borderTopRightRadius',
+			name: "borderTopRightRadius",
 			value: border.borderTopRightRadius,
 			max: 200,
-			label: 'Border Top Right Radius',
-			type: 'slider',
+			label: "Border Top Right Radius",
+			type: "combo",
 		},
 		borderBottomRightRadius: {
 			onChange: (e) => handleSetBorderRadius(e),
-			name: 'borderBottomRightRadius',
+			name: "borderBottomRightRadius",
 			value: border.borderBottomRightRadius,
 			max: 200,
-			label: 'Border Bottom Right Radius',
-			type: 'slider',
+			label: "Border Bottom Right Radius",
+			type: "combo",
 		},
 		borderBottomLeftRadius: {
 			onChange: (e) => handleSetBorderRadius(e),
-			name: 'borderBottomLeftRadius',
+			name: "borderBottomLeftRadius",
 			value: border.borderBottomLeftRadius,
 			max: 200,
-			label: 'Border Bottom Left Radius',
-			type: 'slider',
+			label: "Border Bottom Left Radius",
+			type: "combo",
 		},
 		borderRadiusLock: {
-			label: ['Lock', 'Unlock'],
-			name: 'widthHeightLock',
-			type: 'toggle',
+			label: ["free", "lock"],
+			name: "widthHeightLock",
+			type: "toggle",
 			value: allCornerChange,
 			onChange: () => setAllCornerChange((c) => !c),
+		},
+		isPx: {
+			label: ["%", "px"],
+			name: "units",
+			type: "toggle",
+			value: isPx,
+			onChange: () => setIsPx((p) => !p),
+		},
+		layout: {
+			label: ["flex", "grid"],
+			name: "layout",
+			type: "toggle",
+			value: layoutChecked,
+			onChange: (e) => handleSetLayout(e),
+		},
+		blocks: {
+			label: "blocks",
+			name: "blocks",
+			type: "counter",
+			value: elementCount,
+			onChange: (e) => setElementCount(e.target.value),
+		},
+		columns: {
+			label: "columns",
+			name: "columns",
+			type: "counter",
+			value: columns,
+			onChange: (e) => setColumns(e.target.value),
+		},
+		columnSpacing: {
+			label: "column spacing",
+			name: "columnGap",
+			type: "combo",
+			value: gridGap.columnGap,
+			onChange: (e) => handleGapChange(e),
+		},
+		rowSpacing: {
+			label: "row spacing",
+			name: "rowGap",
+			type: "combo",
+			value: gridGap.rowGap,
+			onChange: (e) => handleGapChange(e),
+		},
+		row: {
+			label: "row",
+			name: "row",
+			type: "radio",
+			value: direction === "row",
+			legend: "flex direction",
+			onChange: (e) => setDirection(e.target.value),
+		},
+		column: {
+			label: "column",
+			name: "column",
+			type: "radio",
+			value: direction === "column",
+			legend: "flex direction",
+			onChange: (e) => setDirection(e.target.value),
+		},
+		solidGradient: {
+			label: ["solid", "linear"],
+			name: "backgroundType",
+			type: "toggle",
+			value: fillIsGradient,
+			onChange: () => setFillIsGradient((fg) => !fg),
+		},
+		color: {
+			label: "color",
+			name: "background1",
+			type: "color",
+			value: color1,
+			onChange: (e) => setColor1(e.target.value),
+		},
+		color2: {
+			label: "color2",
+			name: "background2",
+			type: "color",
+			value: color2,
+			onChange: (e) => setColor2(e.target.value),
+		},
+		gradientAngle: {
+			label: "angle",
+			name: "angle",
+			type: "combo",
+			value: gradientAngle,
+			onChange: (e) => setGradientAngle(e.target.value),
+			max: 360,
+		},
+		gradientMidpoint: {
+			label: "midpoint",
+			name: "gradientMidpoint",
+			type: "combo",
+			value: gradientMidpoint,
+			onChange: (e) => handleSetGradientMidpoint(e),
+			max: 100,
+		},
+		borderWidth: {
+			label: "stroke",
+			name: "borderWidth",
+			type: "combo",
+			value: borderWidth,
+			onChange: (e) => setBorderWidth(e.target.value),
+			max: 40,
+		},
+		borderColor: {
+			label: "border color",
+			name: "borderColor",
+			type: "color",
+			value: borderColor,
+			onChange: (e) => setBorderColor(e.target.value),
 		},
 	};
 
 	return (
 		<div
-			className="App"
+			className='app'
 			style={{
-				display: 'flex',
-				flexDirection: 'row',
+				display: "flex",
+				flexDirection: "column",
 			}}
 		>
-			<div className="spacer" />
-			<div className="fields">
-				<ControlCard
-					fields={[
-						fields.width,
-						fields.widthHeightLock,
-						fields.height,
-					]}
-				/>
-				<ControlCard
-					fields={[
-						fields.borderTopLeftRadius,
-						fields.borderTopRightRadius,
-						fields.borderBottomRightRadius,
-						fields.borderBottomLeftRadius,
-					]}
-				/>
-
-				<fieldset>
-					<legend>Border Radius Units</legend>
-					<label>px</label>
-					<input
-						type="radio"
-						value="px"
-						checked={units === 'px'}
-						defaultChecked
-						onChange={() => setUnits('px')}
-					/>
-					&nbsp; &nbsp; &nbsp; &nbsp;
-					<label>%</label>
-					<input
-						type="radio"
-						value="%"
-						checked={units === '%'}
-						onChange={() => setUnits('%')}
-					/>
-				</fieldset>
-				<Slider
-					onChange={handleBorderChange}
-					name={'borderWidth'}
-					value={border.borderWidth}
-					max={99}
-				/>
-				<Slider
-					onChange={handleGapChange}
-					name={'rowGap'}
-					value={gridGap.rowGap}
-					max={200}
-				/>
-				<label>Lock</label>
-				<input
-					type="checkbox"
-					checked={gridLock}
-					onChange={() => setGridLock((g) => !g)}
-				/>
-				<Slider
-					onChange={handleGapChange}
-					name={'columnGap'}
-					value={gridGap.columnGap}
-					max={200}
-				/>
-				<ColorPicker
-					name="borderColor"
-					value={border.borderColor}
-					onChange={handleBorderChange}
-				/>
-				<fieldset>
-					<legend>Background</legend>
-					<label>Solid Color</label>
-					<input
-						type="radio"
-						value="solid"
-						checked={backgroundType === 'solid'}
-						onChange={() => setBackgroundType('solid')}
-					/>
-					&nbsp; &nbsp; &nbsp; &nbsp;
-					<label>Gradient</label>
-					<input
-						type="radio"
-						value="gradient"
-						checked={backgroundType === 'gradient'}
-						defaultChecked
-						onChange={() => setBackgroundType('gradient')}
-					/>
-				</fieldset>
-				<ColorPicker
-					name="background1"
-					value={colors.background1}
-					onChange={handleColorChange}
-				/>
-				{backgroundType === 'gradient' && (
-					<>
-						<ColorPicker
-							name="background2"
-							value={colors.background2}
-							onChange={handleColorChange}
-						/>
-						<Slider
-							name="midpoint"
-							onChange={handleSetGradientMidpoint}
-							value={gradientMidpoint}
-							max={100}
-						/>
-						<Slider
-							name="angle"
-							onChange={(e) => setGradientAngle(e.target.value)}
-							value={gradientAngle}
-							max={360}
-						/>
-					</>
-				)}
-				<Counter
-					name="Box Count"
-					value={elementCount}
-					onChange={(e) => setElementCount(e.target.value)}
-					max={99}
-				/>
-				<fieldset>
-					<legend>Layout</legend>
-					<label>Flex</label>
-					<input
-						type="radio"
-						value="flex"
-						checked={layout === 'flex'}
-						defaultChecked
-						onChange={() => setLayout('flex')}
-					/>
-					&nbsp; &nbsp; &nbsp; &nbsp;
-					<label>Grid</label>
-					<input
-						type="radio"
-						value="grid"
-						checked={layout === 'grid'}
-						onChange={() => setLayout('grid')}
-					/>
-				</fieldset>
-				{layout === 'flex' ? (
-					<fieldset>
-						<legend>Direction</legend>
-						<label>Row</label>
-						<input
-							type="radio"
-							value="row"
-							checked={direction === 'row'}
-							onChange={() => setDirection('row')}
-						/>
-						&nbsp; &nbsp; &nbsp; &nbsp;
-						<label>Column</label>
-						<input
-							type="radio"
-							value="column"
-							checked={direction === 'column'}
-							defaultChecked
-							onChange={() => setDirection('column')}
-						/>
-					</fieldset>
-				) : (
-					<Counter
-						onChange={(e) => setColumns(e.target.value)}
-						name={'columns'}
-						value={columns}
-						max={40}
-					/>
-				)}
-			</div>
-			<div
-				className="preview-container"
+			<Header />
+			<section
+				className='main-container'
 				style={{
-					width: '50vw',
-					minHeight: '100vw',
-					overflow: 'scroll',
+					display: "flex",
+					flexDirection: "row",
 				}}
 			>
-				<div
-					style={{
-						display: `${layout}`,
-						flexDirection: direction,
-						flexWrap: 'wrap',
-						gridTemplateColumns: `repeat(${columns}, 1fr)`,
-						gap: `${gridGap.rowGap}px ${gridGap.columnGap}px`,
-						justifyContent: 'center',
-						alignItems: 'center',
-						height: layout === 'flex' ? '100vh' : 'auto',
-						width: '100%',
-						padding: 80,
-						boxSizing: 'border-box',
-					}}
-				>
-					{mapElements()}
+				<div className='fields'>
+					<ControlCard
+						fields={
+							layout === "grid"
+								? [
+										fields.layout,
+										fields.blocks,
+										fields.columns,
+										fields.rowSpacing,
+										fields.columnSpacing,
+								  ]
+								: [
+										fields.layout,
+										fields.blocks,
+										fields.row,
+										fields.column,
+										fields.rowSpacing,
+										fields.columnSpacing,
+								  ]
+						}
+						cardLabel='size'
+					/>
+					<ControlCard
+						fields={[
+							fields.width,
+							fields.widthHeightLock,
+							fields.height,
+						]}
+						cardLabel='size'
+					/>
+					<ControlCard
+						fields={
+							fillIsGradient
+								? [
+										fields.solidGradient,
+										fields.color,
+										fields.color2,
+										fields.gradientAngle,
+										fields.gradientMidpoint,
+								  ]
+								: [fields.solidGradient, fields.color]
+						}
+						cardLabel='fill'
+					/>
+					<ControlCard
+						fields={[
+							fields.isPx,
+							fields.borderRadiusLock,
+							fields.borderTopLeftRadius,
+							fields.borderTopRightRadius,
+							fields.borderBottomRightRadius,
+							fields.borderBottomLeftRadius,
+						]}
+						cardLabel='border radius'
+					/>
+					<ControlCard
+						fields={[fields.borderWidth, fields.borderColor]}
+						cardLabel='stroke'
+					/>
 				</div>
-			</div>
-			<Button
-				onClick={handleCopyCss}
-				label="Copy CSS"
-				className="fixed-bottom-right"
-			/>
-			{showClipboardDummyInput && <Dummy />}
+				<div className='preview-container'>
+					<div
+						style={{
+							display: `${layout}`,
+							flexDirection: direction,
+							flexWrap: "wrap",
+							gridTemplateColumns: `repeat(${columns}, auto)`,
+							gap: `${gridGap.rowGap}px ${gridGap.columnGap}px`,
+							justifyContent: "flex-start",
+							alignItems: "flex-start",
+							height: layout === "flex" ? "100%" : "auto",
+							width: layout === 'flex' ? "100%" : 'auto',
+							boxSizing: "border-box",
+						}}
+					>
+						{mapElements()}
+					</div>
+				</div>
+				<Button
+					onClick={handleCopyCss}
+					label='Copy CSS'
+					className='fixed-bottom-right css-butt'
+				/>
+				{showClipboardDummyInput && <Dummy />}
+				{showSnackbar && <Snackbar message='Copied!' show={showSnackbar} hide={() => setShowSnackbar(false)} />}
+			</section>
 		</div>
 	);
 }
-
-// todo
-// random button

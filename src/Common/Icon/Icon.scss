@@ -1,0 +1,20 @@
+@import './../../Styles/variables.scss';
+
+
+.icon {
+    width: 16px;
+    height: auto;
+    position: relative;
+    &.is-wrapped {
+        width: 100%;
+        height: auto;
+    }
+    &.flip {
+        transform-origin: center;
+        transform: rotate(180deg);
+        transition: 0.2s;
+    }
+    &--cc {
+        min-width: 24px;
+    }
+}

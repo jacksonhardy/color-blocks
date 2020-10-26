@@ -1,0 +1,10 @@
+@import '../../../Styles/variables.scss';
+
+
+.card {
+    @extend %card-shadow;
+    box-sizing: border-box;
+    border-radius: $border-radius;
+    margin: u(2) 0;
+    padding: 0;
+}

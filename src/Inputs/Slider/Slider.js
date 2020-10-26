@@ -1,9 +1,8 @@
 import React from 'react';
+import './Slider.scss'
 
 const Slider = (props) => {
 	return (
-		<div className="input-container">
-			<p style={{ textAlign: 'right', width: 200 }}> {props.name}</p>
 			<input
 				type="range"
 				name={props.name}
@@ -13,8 +12,6 @@ const Slider = (props) => {
 				onChange={props.onChange}
 				className="slider"
 			/>
-			<p style={{ textAlign: 'left', width: 80 }}> {props.value}</p>
-		</div>
 	);
 };
 

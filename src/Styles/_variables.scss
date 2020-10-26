@@ -1,0 +1,24 @@
+
+@function u($multiplier) {
+    $unit-result: 4px * $multiplier;
+    @return $unit-result;
+}
+
+@mixin flex($dir, $justify, $align) {
+    display: flex;
+    flex-direction: $dir;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+
+$fade-in: 0.2s;
+$fade-out: 0.1s;
+
+%fade-in {
+    transition: all $fade-in ease-in-out;
+}
+
+%fade-out {
+    transition: all $fade-out ease-in-out;
+}

@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
+
+h1, h2, h3, h4, h5, h6, p, input, label, textarea, div, span, a, button, nav, li, ul, ol, section {
+	font-family: 'DM Sans', sans-serif;
+	margin-block-start: 0;
+	margin-block-end: 0;
+}
+
+.heading {
+	font-family: DM Sans;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 24px;
+	line-height: 32px;
+	letter-spacing: -0.02em;
+}
+
+.label {
+	font-family: DM Sans;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 14px;
+	line-height: 20px;
+}
+
+.body, input {
+	font-family: DM Sans;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 18px;
+}

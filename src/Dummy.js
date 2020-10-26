@@ -13,7 +13,7 @@ export default class Dummy extends React.Component {
 	}
 	render() {
 		return ReactDOM.createPortal(
-			<input id="dummy-input" readOnly />,
+			<textarea id="dummy-input" readOnly />,
 			this.el
 		);
 	}

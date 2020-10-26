@@ -1,0 +1,102 @@
+@import './Styles/colors';
+@import './Styles/themes';
+@import './Styles/variables';
+@import './Styles/fonts';
+
+
+.App {
+	background: $grayWhite;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	 background: $grayWhite;
+}
+
+.header {
+	height: auto;
+	@include flex(row, space-between, center);
+	width: 100vw;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	background: $grayWhite;
+	padding: 24px 40px;
+	box-sizing: border-box; 
+}
+
+.main-container {
+	width: 100vw;
+	height: 100vh;
+	padding-top: 80px;
+	position: relative;
+	box-sizing: border-box; 
+	background: $grayWhite;
+}
+
+.logo {
+	position: relative;
+	background: $gradient;
+	width: fit-content;
+	background-size: 100%;
+	color: $black;
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+
+
+.row {
+	display: flex;
+	flex-direction: row;
+}
+
+.col {
+	display: flex;
+	flex-direction: column;
+}
+
+.spacer {
+	width: 50vw;
+	height: 100vh;
+	background: $grayWhite;
+}
+
+.fields {
+	top: 80px;
+	left: 40px;
+	width: fit-content;
+	padding: 0 24px 24px 0;
+	box-sizing: border-box; 
+	height: calc(100vh - 80px);
+	overflow: scroll;
+	position: fixed;
+	max-width: 50vw;
+	margin-right: 40px;
+	background: $grayWhite;
+}
+
+.preview-container {
+	width: calc(100vw - 420px - 120px);
+	overflow: scroll;
+	position: fixed;
+	top: 80px;
+	right: 40px;
+	height: calc(100vh - 80px - 52px);
+	margin: 12px 0 0 0;
+	border-radius: 16px;
+	box-shadow: $shadow-big;
+	background: $white;
+	box-sizing: border-box; 
+	padding: 40px;
+}
+
+
+.fixed-bottom-right {
+	right: 64px;
+	bottom: 64px;
+	position: fixed;
+}

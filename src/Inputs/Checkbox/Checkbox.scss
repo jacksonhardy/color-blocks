@@ -1,0 +1,71 @@
+@import 'variables';
+@import '_constants';
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+}
+
+.checkbox,
+input.checkbox {
+    opacity: 0;
+}
+
+.checkbox-wrapper {
+    height: u(4);
+}
+
+.custom-checkbox {
+    cursor: pointer;
+    height: u(4);
+    width: u(4);
+    border: 1px solid $gray-5;
+    border-radius: $border-radius;
+    position: absolute;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    &.is-checked {
+        background-image: url(./../../Assets/Icons/check-far--white.svg);
+        // background-image: url(./../../Assets/Icons/check-far--blue.svg);
+        background-color: $gray-3;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: u(2.5);
+        border-color: $gray-3;
+    }
+}
+
+// input[type="checkbox"] {
+//   position: relative;
+//   width: 1em;
+//   height: 1em;
+//   border: 1px solid gray;
+//   /* Adjusts the position of the checkboxes on the text baseline */
+//   vertical-align: -2px;
+//   /* Set here so that Windows' High-Contrast Mode can override */
+//   color: green;
+// }
+
+// input[type="checkbox"]::before {
+//   content: "✔";
+//   position: absolute;
+//   font-size: 1.2em;
+//   right: -1px;
+//   top: -0.3em;
+// //   visibility: hidden;
+// }
+
+// input[type="checkbox"]:checked::before {
+//   /* Use `visibility` instead of `display` to avoid recalculating layout */
+//   visibility: visible;
+// }
+
+input[type="checkbox"]:disabled {
+    border-color: black;
+    background: #ddd;
+    color: gray;
+}
+
+.select-wrapper::after {
+    content: "▼";
+}

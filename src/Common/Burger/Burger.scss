@@ -1,0 +1,238 @@
+@import './../../../Styles/variables';
+
+.menu-burger {
+	z-index: 100;
+	height: u(20);
+	width: u(25);
+	cursor: pointer;
+	&:focus {
+		outline: none;
+	}
+	&__inner {
+		height: u(20);
+		width: u(25);
+		cursor: pointer;
+		&:focus {
+			outline: none;
+		}
+	}
+	&.default {
+		.burger-arm,
+		.x-arm {
+			transition: all 0.3s ease;
+			width: u(10);
+			height: u(1);
+			background: $blue-primary;
+			border-radius: u(2);
+		}
+		.burger-arm {
+			&.--top {
+				margin-bottom: u(1);
+			}
+			&.--bottom {
+				margin-top: u(1);
+			}
+		}
+		.x-arm {
+			&.--top {
+				transform: rotate(225deg) translate(-1px, -1px);
+			}
+			&.--middle {
+				transform: scaleX(0);
+			}
+			&.--bottom {
+				transform: rotate(-225deg) translate(-1px, 3px);
+			}
+		}
+	}
+	&.two-arm {
+		.burger-arm,
+		.x-arm {
+			transition: all 0.3s ease;
+			width: u(10);
+			height: u(1);
+			background: $blue-primary;
+			border-radius: u(2);
+		}
+		.burger-arm {
+			&.--top {
+				margin-bottom: u(1);
+			}
+			&.--bottom {
+				margin-top: u(1);
+			}
+		}
+		.x-arm {
+			&.--top {
+				transform: rotate(225deg) translate(-1px, -1px);
+			}
+			&.--bottom {
+				transform: rotate(-225deg) translate(-1px, 3px);
+			}
+		}
+	}
+	&.no-animation {
+		.burger-arm,
+		.x-arm {
+			transition: none;
+			width: u(10);
+			height: u(1);
+			background: $blue-primary;
+			border-radius: u(2);
+		}
+		.burger-arm {
+			&.--top {
+				margin-bottom: u(1);
+			}
+			&.--bottom {
+				margin-top: u(1);
+			}
+		}
+		.x-arm {
+			&.--top {
+				transform: rotate(45deg) translate(3px, 4px);
+			}
+			&.--middle {
+				transform: scaleX(0);
+			}
+			&.--bottom {
+				transform: rotate(-45deg) translate(1px, -3px);
+			}
+		}
+	}
+	&.alternate {
+		.burger-arm,
+		.x-arm {
+			transition: all 0.4s ease-in-out;
+			width: u(10);
+			height: u(1);
+			background: $blue-primary;
+			border-radius: u(2);
+		}
+		.burger-arm {
+			&.--top {
+				margin-bottom: u(1);
+				animation: btop;
+				animation-duration: 0.4s;
+				animation-iteration-count: 1;
+				animation-timing-function: ease-in-out;
+			}
+			&.--middle {
+                transition-duration: .2s;
+                transition-delay: .2s;
+			}
+			&.--bottom {
+				margin-top: u(1);
+				animation: bbottom;
+				animation-duration: 0.5s;
+				animation-iteration-count: 1;
+				animation-timing-function: ease-in-out;
+			}
+		}
+		.x-arm {
+			&.--top {
+				transform: rotate(45deg) translate(3px, 4px);
+				animation: xtop;
+				animation-duration: 0.4s;
+				animation-iteration-count: 1;
+				animation-timing-function: ease-in-out;
+			}
+			&.--middle {
+                transition-duration: .2s;
+				transform: scaleX(0);
+			}
+			&.--bottom {
+				transform: rotate(-45deg) translate(1px, -3px);
+				animation: xbottom;
+				animation-duration: 0.3s;
+				animation-iteration-count: 1;
+				animation-timing-function: ease-in-out;
+			}
+		}
+	}
+	&.two-arm-simple {
+		.burger-arm,
+		.x-arm {
+			transition: all 0.3s ease;
+			width: u(8);
+			height: u(1);
+			background: $blue-primary;
+			border-radius: u(1);
+		}
+		.burger-arm {
+			&.--top {
+				margin-bottom: u(1);
+			}
+			&.--bottom {
+				margin-top: u(1);
+			}
+		}
+		.x-arm {
+			&.--top {
+				transform: rotate(45deg) translate(2px, 4px);
+			}
+			&.--bottom {
+				transform: rotate(-45deg) translate(-1px, -1px);
+			}
+		}
+	}
+}
+
+@keyframes xtop {
+	0% {
+		// transform: rotate(0deg) translate(0, 0);
+		transform: scaleX(1);
+	}
+
+	50% {
+		transform: scaleX(0);
+	}
+
+	100% {
+		transform: scaleX(1) rotate(45deg) translate(3px, 4px);
+	}
+}
+
+@keyframes btop {
+	0% {
+		// transform: rotate(0deg) translate(0, 0);
+		transform: scaleX(1) rotate(45deg) translate(3px, 4px);
+	}
+
+	50% {
+		transform: scaleX(0);
+	}
+
+	100% {
+		transform: scaleX(1);
+	}
+}
+@keyframes xbottom {
+	0% {
+		// transform: rotate(0deg) translate(0, 0);
+		transform: scaleX(1);
+	}
+
+	50% {
+		transform: scaleX(0);
+	}
+
+	100% {
+		transform: scaleX(1) rotate(-45deg) translate(1px, -3px);
+	}
+}
+
+@keyframes bbottom {
+	0% {
+		// transform: rotate(0deg) translate(0, 0);
+		transform: scaleX(1) rotate(-45deg) translate(1px, -3px);
+	}
+
+	50% {
+		transform: scaleX(0);
+	}
+
+	100% {
+		transform: scaleX(1);
+	}
+}

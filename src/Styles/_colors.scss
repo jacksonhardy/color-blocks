@@ -1,0 +1,27 @@
+$orange: #FF5B45;
+$pink: #F476FF;
+$purple: #8976FF;
+$black: #262626;
+$grayMid: #C4C4C4;
+$grayWhite: #FAFAFA;
+$white: #FFFFFF;
+$grayLightest: #e5e5e5;
+
+$black02: transparentize($black, .98);
+$black04: transparentize($black, .96);
+$black08: transparentize($black, .92);
+$black36: transparentize($black, .64);
+$black40: transparentize($black, .6);
+$black80: transparentize($black, .2);
+$black92: transparentize($black, .08);
+$black98: transparentize($black, .02);
+
+$white40: transparentize($white, .6);
+
+
+$shadow-big: 0 1px 16px $black04;
+$shadow-small: 0px 1px 8px $black04;
+$shadow-depth: inset 0 0 12px $black02;
+
+$gradient: linear-gradient(96.27deg, $pink -7.91%, $orange 105.26%);
+$gradient-transparent: linear-gradient(96.27deg, transparentize($pink, .6) -7.91%, transparentize($orange, .6) 105.26%);

@@ -1,0 +1,37 @@
+@import "./../../Styles/colors";
+@import "./../../Styles/variables";
+
+.slider {
+	height: 32px;
+	border-radius: 8px;
+	width: 100%;
+	border: 1px solid transparent;
+	box-sizing: border-box; 
+	min-width: 288px;
+	@include flex(column, center, flex-start);
+	&::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		background: $orange;
+		height: 12px; 
+		width: 12px;
+		border-radius: 100%;
+		margin-top: -4px;
+	}
+	&::-webkit-slider-runnable-track {
+		background: $gradient-transparent;
+		height: 4px;
+		min-width: 288px;
+		border-radius: 4px;
+		width: 100%;
+		box-sizing: border-box; 
+	}
+	&:focus {
+		outline: none;
+		// border: 1px solid transparentize($purple, .4);
+	}
+}
+
+input[type='range'] {
+	width: 100%;
+	appearance: none;
+}

@@ -1,0 +1,154 @@
+@import './../../Styles/colors';
+
+.toggle-wrapper {
+	width: auto;
+	height: auto;
+}
+
+.toggle {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	position: relative;
+	width: fit-content;
+	background: $black04;
+	border-radius: 32px;
+	box-sizing: border-box; 
+	box-shadow: $shadow-depth;
+	// border: 1px solid $black04;
+	padding: 0 4px;
+	&__input {
+		display: none;
+		opacity: 0;
+		height: 0;
+	}
+	&__button {
+		position: absolute;
+		height: 32px;
+		border-radius: 100%;
+		width: 28px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background: $white;
+		box-sizing: border-box;
+		color: $orange;
+		// animation: slide-on;
+		// animation-duration: 0.3s;
+		right: 3px;
+		top: 2px;
+		transition-property: all;
+		&[toggle-on="true"] {
+			transition-duration: 0.3s;
+			// animation-direction: normal;
+			transform: translateX(0);
+		}
+		&[toggle-on="false"] {
+			// animation-direction: reverse;
+			transition-duration: 0.3s;
+			transform: translateX(-30px);
+			// background: $black04;
+			// left: 2px;
+		}
+	}
+	&__button-alt {
+		position: absolute;
+		height: 32px;
+		border-radius: 32px;
+		width: 50%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background: $white;
+		box-sizing: border-box;
+		box-shadow: $shadow-small;
+		// color: $orange;
+		// animation: slide-on;
+		// animation-duration: 0.3s;
+		right: 3px;
+		top: 2px;
+		transition-property: all;
+		&[toggle-on="true"] {
+			transition-duration: 0.3s;
+			// animation-direction: normal;
+			transform: translateX(0);
+		}
+		&[toggle-on="false"] {
+			// animation-direction: reverse;
+			transition-duration: 0.3s;
+			transform: translateX(-90%);
+			// background: $black04;
+			// left: 2px;
+		}
+	}
+	&__half {
+		width: fit-content;
+		height: 36px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background: transparent;
+		box-sizing: border-box;
+		color: $black36;
+		.icon, .toggle-label {
+			z-index: 2;
+		}
+		.toggle-label {
+			transition: 0.3s;
+			color: $black36;
+			padding: 7px 12px;
+			text-align: center;
+			box-sizing: border-box; 
+		}
+		&[is-active="true"] {
+			.toggle-label {
+				color: $orange;
+				transition: 0.3s;
+			}
+		}
+		&.--off {
+			border-radius: 115px 0 0 115px;
+			border-right: none;
+			.icon {
+				transition: 0.3s;
+			}
+			.toggle-label {
+				transition: 0.3s;
+
+			}
+			&[is-active="true"] {
+				.icon {
+					color: $orange;
+					transition: 0.3s;
+				}
+				.toggle-label {
+					color: $orange;
+					transition: 0.3s;
+				}
+			}
+		}
+
+		&.--on {
+			border-radius: 0 115px 115px 0;
+			border-left: none;
+			.icon {
+			color: white;
+			}
+		}
+	}
+}
+
+// @keyframes slide-on {
+// 	0% {
+// 		transform: translateX(-100%);
+// 	}
+
+// 	100% {
+// 		transform: tranlateX(0);
+// 	}
+// }
