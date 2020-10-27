@@ -1,27 +1,36 @@
-$orange: #FF5B45;
-$pink: #F476FF;
-$purple: #8976FF;
+$orange: #ff5b45;
+$pink: #f476ff;
+$purple: #8976ff;
 $black: #262626;
-$grayMid: #C4C4C4;
-$grayWhite: #FAFAFA;
-$white: #FFFFFF;
+$grayMid: #c4c4c4;
+$grayWhite: #fafafa;
+$white: #ffffff;
 $grayLightest: #e5e5e5;
 
-$black02: transparentize($black, .98);
-$black04: transparentize($black, .96);
-$black08: transparentize($black, .92);
-$black36: transparentize($black, .64);
-$black40: transparentize($black, .6);
-$black80: transparentize($black, .2);
-$black92: transparentize($black, .08);
-$black98: transparentize($black, .02);
+$black02: transparentize($black, 0.98);
+$black04: transparentize($black, 0.96);
+$black08: transparentize($black, 0.92);
+$black36: transparentize($black, 0.64);
+$black40: transparentize($black, 0.6);
+$black80: transparentize($black, 0.2);
+$black92: #2f2f2f;
+$black98: transparentize($black, 0.02);
+$blackDarker: #1e1e1e;
 
-$white40: transparentize($white, .6);
-
+$white04: transparentize($white, 0.96);
+$white16: transparentize($white, 0.84);
+$white40: transparentize($white, 0.6);
+$white80: transparentize($white, 0.2);
 
 $shadow-big: 0 1px 16px $black04;
 $shadow-small: 0px 1px 8px $black04;
 $shadow-depth: inset 0 0 12px $black02;
+$shadow-snackbar-dark-mode: 0 4px 12px $white04;
+$shadow-snackbar-light-mode: 0 4px 12px $black08;
 
 $gradient: linear-gradient(96.27deg, $pink -7.91%, $orange 105.26%);
-$gradient-transparent: linear-gradient(96.27deg, transparentize($pink, .6) -7.91%, transparentize($orange, .6) 105.26%);
+$gradient-transparent: linear-gradient(
+	96.27deg,
+	transparentize($pink, 0.6) -7.91%,
+	transparentize($orange, 0.6) 105.26%
+);

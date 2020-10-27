@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Dummy from "./Dummy";
 import Counter from "./Inputs/Counter/Counter";
 import Slider from "./Inputs/Slider/Slider";
@@ -9,15 +9,18 @@ import Button from "./Common/Buttons/Button/Button";
 import Header from "./Header";
 import Snackbar from "./Common/Snackbar/Snackbar";
 
+export const DarkMode = React.createContext('--light');
+
 export default function App() {
+	const isDarkMode = useContext(DarkMode);
 	const [border, setBorder] = useState({
-		borderTopLeftRadius: 0,
-		borderTopRightRadius: 0,
-		borderBottomRightRadius: 0,
-		borderBottomLeftRadius: 0,
+		borderTopLeftRadius: 16,
+		borderTopRightRadius: 16,
+		borderBottomRightRadius: 16,
+		borderBottomLeftRadius: 16,
 	});
 	const [allCornerChange, setAllCornerChange] = useState(false);
-	const [showSnackbar, setShowSnackbar] = useState(false)
+	const [showSnackbar, setShowSnackbar] = useState(false);
 
 	const [showClipboardDummyInput, setShowClipboardDummyInput] = useState(
 		false
@@ -141,7 +144,7 @@ export default function App() {
 					borderBottomRightRadius: `${border.borderBottomRightRadius}${units}`,
 					borderBottomLeftRadius: `${border.borderBottomLeftRadius}${units}`,
 					border: `${borderWidth}px solid ${borderColor}`,
-					boxSizing: 'border-box'
+					boxSizing: "border-box",
 				}}
 			/>
 		);
@@ -185,7 +188,7 @@ export default function App() {
 		}
 		`;
 		setShowClipboardDummyInput(true);
-		setShowSnackbar(true)
+		setShowSnackbar(true);
 		setTimeout(() => {
 			let dummy = document.getElementById("dummy-input");
 			dummy.value = cssText;
@@ -374,108 +377,130 @@ export default function App() {
 		},
 	};
 
+	const [darkMode, setDarkMode] = useState(false);
+	const [theme, setTheme] = useState(darkMode ? '--dark' : '--light')
+
+	useEffect(() => {
+		if (darkMode) {
+			setTheme(() => '--dark')
+		} else {
+			setTheme(() => '--light')
+		}
+	}, [darkMode])
+
 	return (
-		<div
-			className='app'
-			style={{
-				display: "flex",
-				flexDirection: "column",
-			}}
-		>
-			<Header />
-			<section
-				className='main-container'
+		<DarkMode.Provider value={theme}>
+			<div
+				className={`app ${theme}`}
 				style={{
 					display: "flex",
-					flexDirection: "row",
+					flexDirection: "column",
 				}}
 			>
-				<div className='fields'>
-					<ControlCard
-						fields={
-							layout === "grid"
-								? [
-										fields.layout,
-										fields.blocks,
-										fields.columns,
-										fields.rowSpacing,
-										fields.columnSpacing,
-								  ]
-								: [
-										fields.layout,
-										fields.blocks,
-										fields.row,
-										fields.column,
-										fields.rowSpacing,
-										fields.columnSpacing,
-								  ]
-						}
-						cardLabel='size'
-					/>
-					<ControlCard
-						fields={[
-							fields.width,
-							fields.widthHeightLock,
-							fields.height,
-						]}
-						cardLabel='size'
-					/>
-					<ControlCard
-						fields={
-							fillIsGradient
-								? [
-										fields.solidGradient,
-										fields.color,
-										fields.color2,
-										fields.gradientAngle,
-										fields.gradientMidpoint,
-								  ]
-								: [fields.solidGradient, fields.color]
-						}
-						cardLabel='fill'
-					/>
-					<ControlCard
-						fields={[
-							fields.isPx,
-							fields.borderRadiusLock,
-							fields.borderTopLeftRadius,
-							fields.borderTopRightRadius,
-							fields.borderBottomRightRadius,
-							fields.borderBottomLeftRadius,
-						]}
-						cardLabel='border radius'
-					/>
-					<ControlCard
-						fields={[fields.borderWidth, fields.borderColor]}
-						cardLabel='stroke'
-					/>
-				</div>
-				<div className='preview-container'>
-					<div
-						style={{
-							display: `${layout}`,
-							flexDirection: direction,
-							flexWrap: "wrap",
-							gridTemplateColumns: `repeat(${columns}, auto)`,
-							gap: `${gridGap.rowGap}px ${gridGap.columnGap}px`,
-							justifyContent: "flex-start",
-							alignItems: "flex-start",
-							height: layout === "flex" ? "100%" : "auto",
-							width: layout === 'flex' ? "100%" : 'auto',
-							boxSizing: "border-box",
-						}}
-					>
-						{mapElements()}
-					</div>
-				</div>
-				<Button
-					onClick={handleCopyCss}
-					label='Copy CSS'
-					className='fixed-bottom-right css-butt'
+				<Header
+					darkMode={darkMode}
+					toggleDarkMode={() => setDarkMode((d) => !d)}
 				/>
-				{showClipboardDummyInput && <Dummy />}
-				{showSnackbar && <Snackbar message='Copied!' show={showSnackbar} hide={() => setShowSnackbar(false)} />}
-			</section>
-		</div>
+				<section
+					className={`main-container ${theme}`}
+					style={{
+						display: "flex",
+						flexDirection: "row",
+					}}
+				>
+					<div className={`fields ${theme}`}>
+						<ControlCard
+							fields={
+								layout === "grid"
+									? [
+											fields.layout,
+											fields.blocks,
+											fields.columns,
+											fields.rowSpacing,
+											fields.columnSpacing,
+									  ]
+									: [
+											fields.layout,
+											fields.blocks,
+											fields.row,
+											fields.column,
+											fields.rowSpacing,
+											fields.columnSpacing,
+									  ]
+							}
+							cardLabel='size'
+						/>
+						<ControlCard
+							fields={[
+								fields.width,
+								fields.widthHeightLock,
+								fields.height,
+							]}
+							cardLabel='size'
+						/>
+						<ControlCard
+							fields={
+								fillIsGradient
+									? [
+											fields.solidGradient,
+											fields.color,
+											fields.color2,
+											fields.gradientAngle,
+											fields.gradientMidpoint,
+									  ]
+									: [fields.solidGradient, fields.color]
+							}
+							cardLabel='fill'
+						/>
+						<ControlCard
+							fields={[
+								fields.isPx,
+								fields.borderRadiusLock,
+								fields.borderTopLeftRadius,
+								fields.borderTopRightRadius,
+								fields.borderBottomRightRadius,
+								fields.borderBottomLeftRadius,
+							]}
+							cardLabel='border radius'
+						/>
+						<ControlCard
+							fields={[fields.borderWidth, fields.borderColor]}
+							cardLabel='stroke'
+						/>
+					</div>
+					<div className={`preview-container ${theme}`}>
+						<div
+							style={{
+								display: `${layout}`,
+								flexDirection: direction,
+								flexWrap: "wrap",
+								gridTemplateColumns: `repeat(${columns}, auto)`,
+								gap: `${gridGap.rowGap}px ${gridGap.columnGap}px`,
+								justifyContent: "flex-start",
+								alignItems: "flex-start",
+								height: layout === "flex" ? "100%" : "auto",
+								width: layout === "flex" ? "100%" : "auto",
+								boxSizing: "border-box",
+							}}
+						>
+							{mapElements()}
+						</div>
+					</div>
+					<Button
+						onClick={handleCopyCss}
+						label='Copy CSS'
+						className='fixed-bottom-right css-butt'
+					/>
+					{showClipboardDummyInput && <Dummy />}
+					{showSnackbar && (
+						<Snackbar
+							message='Copied!'
+							show={showSnackbar}
+							hide={() => setShowSnackbar(false)}
+						/>
+					)}
+				</section>
+			</div>
+		</DarkMode.Provider>
 	);
 }

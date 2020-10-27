@@ -23,7 +23,7 @@ input[type="radio"].radio-button {
 	border: 1px solid $black36;
 	border-radius: 100%;
 	&.--checked {
-		background: $orange;
+		background: $gradient;
 	}
 
 }

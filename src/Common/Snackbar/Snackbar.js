@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./Snackbar.scss";
+import { DarkMode } from "../../App";
 
 const Snackbar = (props) => {
+	const theme = useContext(DarkMode)
 	useEffect(() => {
 		if (props.show) {
 			setTimeout(() => {
@@ -12,7 +14,7 @@ const Snackbar = (props) => {
 	}, [props.show]);
 
 	return (
-		<div className='snackbar'>
+		<div className={`snackbar ${theme}`}>
 			<p className='body'>{props.message}</p>
 		</div>
 	);

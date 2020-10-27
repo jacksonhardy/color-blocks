@@ -12,6 +12,24 @@
 	justify-content: flex-start;
 	align-items: flex-start;
 	background: $white;
+	&.--dark {
+		background: $black92;
+		label {
+			color: $white80;
+		}
+		.fieldset {
+			color: $white80;
+			border-color: $white16;
+			.radio-button--with-label {
+				.radio-button__display {
+					border-color: $white40;
+					&.--checked {
+						background: $gradient;
+					}
+				}
+			}
+		}
+	}
 	border-radius: 16px;
 	box-shadow: $shadow-big;
 	margin: 12px 0;

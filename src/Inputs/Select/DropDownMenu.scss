@@ -16,7 +16,8 @@
         border: 1px solid $gray-5;
         border-radius: $border-radius;
         max-height: 300px;
-        overflow: scroll;
+		overflow: scroll;
+		box-sizing: border-box; 
     }
 
     ul {

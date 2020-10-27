@@ -33,4 +33,11 @@
 		height: 24px;
 		width: 24px;
 	}
+	&.--dark {
+		border-color: $white40;
+		.input.text-input {
+			background: transparent;
+			color: $white80;
+		}
+	}
 }

@@ -1,11 +1,12 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import PropTypes from "prop-types";
 import "./Counter.scss";
 import TextInput from "./../TextInput/TextInput.js";
+import { DarkMode } from "../../App";
 
 const Counter = (props) => {
 	const inputElement = useRef();
-
+	const theme = useContext(DarkMode)
 	const doDecrementCounter = (e) => {
 		let nextValue = parseFloat(props.value || 0) - buttonStep;
 		if (isNaN(nextValue)) return;
@@ -48,7 +49,7 @@ const Counter = (props) => {
 
 	return (
 		<div
-			className={`counter-wrapper counter-input`}
+			className={`counter-wrapper counter-input ${theme}`}
 		>
 			<TextInput ref={inputElement} type='number' {...rest} />
 			<div className='counter-buttons'>

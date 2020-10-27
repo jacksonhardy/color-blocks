@@ -1,4 +1,4 @@
-@import './../../Styles/colors';
+@import "./../../Styles/colors";
 
 .toggle-wrapper {
 	width: auto;
@@ -15,7 +15,7 @@
 	width: fit-content;
 	background: $black04;
 	border-radius: 32px;
-	box-sizing: border-box; 
+	box-sizing: border-box;
 	box-shadow: $shadow-depth;
 	// border: 1px solid $black04;
 	padding: 0 4px;
@@ -85,6 +85,39 @@
 			// left: 2px;
 		}
 	}
+	&.--dark {
+		.toggle__button-alt {
+			position: absolute;
+			height: 32px;
+			border-radius: 32px;
+			width: 50%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			background: $gradient;
+			box-sizing: border-box;
+			box-shadow: $shadow-small;
+			// color: $orange;
+			// animation: slide-on;
+			// animation-duration: 0.3s;
+			right: 3px;
+			top: 2px;
+			transition-property: all;
+			&[toggle-on="true"] {
+				transition-duration: 0.3s;
+				// animation-direction: normal;
+				transform: translateX(0);
+			}
+			&[toggle-on="false"] {
+				// animation-direction: reverse;
+				transition-duration: 0.3s;
+				transform: translateX(-90%);
+				// background: $black04;
+				// left: 2px;
+			}
+		}
+	}
 	&__half {
 		width: fit-content;
 		height: 36px;
@@ -95,7 +128,8 @@
 		background: transparent;
 		box-sizing: border-box;
 		color: $black36;
-		.icon, .toggle-label {
+		.icon,
+		.toggle-label {
 			z-index: 2;
 		}
 		.toggle-label {
@@ -103,11 +137,17 @@
 			color: $black36;
 			padding: 7px 12px;
 			text-align: center;
-			box-sizing: border-box; 
+			box-sizing: border-box;
 		}
 		&[is-active="true"] {
 			.toggle-label {
+				background: $gradient;
+				width: fit-content;
+				background-size: 100%;
 				color: $orange;
+				background-clip: text;
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
 				transition: 0.3s;
 			}
 		}
@@ -119,7 +159,6 @@
 			}
 			.toggle-label {
 				transition: 0.3s;
-
 			}
 			&[is-active="true"] {
 				.icon {
@@ -127,7 +166,13 @@
 					transition: 0.3s;
 				}
 				.toggle-label {
+					background: $gradient;
+					width: fit-content;
+					background-size: 100%;
 					color: $orange;
+					background-clip: text;
+					-webkit-background-clip: text;
+					-webkit-text-fill-color: transparent;
 					transition: 0.3s;
 				}
 			}
@@ -137,7 +182,32 @@
 			border-radius: 0 115px 115px 0;
 			border-left: none;
 			.icon {
-			color: white;
+				color: white;
+			}
+		}
+	}
+	&.--dark {
+		background: $black80;
+		&.dark-black {
+			transition: 0.5s;
+			background: $blackDarker;
+		}
+		.toggle__half {
+			color: $white40;
+			&.--off,
+			&.--on {
+				.toggle-label {
+					color: $white40;
+				}
+				&[is-active="true"] {
+					.toggle-label {
+						color: $white;
+						background: none;
+						background-clip: text;
+						-webkit-background-clip: text;
+						-webkit-text-fill-color: $white;
+					}
+				}
 			}
 		}
 	}

@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { DarkMode } from "../../App";
 import ColorPicker from "../../Inputs/ColorPicker/ColorPicker";
 import Counter from "../../Inputs/Counter/Counter";
 import {
 	RadioButtonWithLabel,
-	RadioButtonWithSubLabel,
 } from "../../Inputs/RadioButton/RadioButton";
 import Slider from "../../Inputs/Slider/Slider";
 import Toggle from "../../Inputs/Toggle/Toggle";
 import "./ControlCard.scss";
 
 const ControlCard = (props) => {
+	const theme = useContext(DarkMode)
 	const [toggles, setToggles] = useState([]);
 	const [combos, setCombos] = useState([]);
 	const [radios, setRadios] = useState([]);
@@ -35,7 +36,7 @@ const ControlCard = (props) => {
 	}, [props.fields]);
 
 	return (
-		<div className='control-card'>
+		<div className={`control-card ${theme}`}>
 			<div className='card-header'>
 				<label className='label'>{props.cardLabel}</label>
 				{toggles.length > 0 && (

@@ -1,8 +1,10 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import PropTypes from "prop-types";
 import "./Toggle.scss";
+import { DarkMode } from "../../App";
 
 const Toggle = (props) => {
+	const theme = useContext(DarkMode)
 	return (
 		<>
 			<input
@@ -11,7 +13,7 @@ const Toggle = (props) => {
 				checked={props.checked}
 				onChange={props.onChange}
 			/>
-			<div className='toggle' is-on={`${props.checked}`} onClick={props.onChange}>
+			<div className={`toggle ${theme} ${props.className}`} is-on={`${props.checked}`} onClick={props.onChange}>
 				<span
 					className='toggle__half --off'
 					is-active={`${!props.checked}`}

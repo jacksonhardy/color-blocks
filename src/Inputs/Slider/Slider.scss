@@ -9,9 +9,13 @@
 	box-sizing: border-box; 
 	min-width: 288px;
 	@include flex(column, center, flex-start);
+	background: transparent;
+	&.--dark {
+		background: transparent;
+	}
 	&::-webkit-slider-thumb {
 		-webkit-appearance: none;
-		background: $orange;
+		background: $gradient;
 		height: 12px; 
 		width: 12px;
 		border-radius: 100%;
